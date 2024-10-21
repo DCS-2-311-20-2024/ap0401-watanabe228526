@@ -1,6 +1,6 @@
 //
-// 応用プログラミング 第5回 課題1 (ap0501)
-// G184002021 拓殖太郎
+// 応用プログラミング 第4回 課題 (ap0401)
+// G384002023 拓殖太郎
 //
 "use strict"; // 厳格モード
 
@@ -15,7 +15,9 @@ function init() {
     x: 0,
     y: 25,
     z: 10,
-    axes: false,
+    nRow: 6, /* ブロックの行数 */
+    nCol: 9, /* ブロックの列数 */
+    axes: true,
   };
 
   // シーン作成
@@ -26,7 +28,7 @@ function init() {
   scene.add(axes);
 
   // ブロック数のカウント
-  let nBlock = 0
+  let nBrick = 0
 
   // スコア表示
   let score = 0;
@@ -122,14 +124,14 @@ function init() {
     // パドル中央
     const center = new THREE.Mesh(
       new THREE.CylinderGeometry(paddleR, paddleR, paddleL, nSeg),
-      new THREE.MeshPhongMaterial({ color: 0x333333, specular: 0x404040 })
+      new THREE.MeshPhongMaterial({ color: 0x333333, shininess: 100, specular: 0x404040 })
     );
 
     // パドル端
     const sideGeometry
       = new THREE.SphereGeometry(paddleR, nSeg, nSeg, Math.PI / 2, Math.PI);
     const sideMaterial
-      = new THREE.MeshPhongMaterial({ color: 0x666666, specular: 0xa0a0a0 })
+      = new THREE.MeshPhongMaterial({ color: 0x666666, shininess: 100, specular: 0xa0a0a0 })
     // パドル端(右)
 
     // パドル端(左)
@@ -161,13 +163,13 @@ function init() {
   const bricks = new THREE.Group();
   {
     const color = ["white", "red", "yellow", "blue", "purple", "green"];
-    const param = {
-      h: 0.8, /* ブロックの高さ */ d: 0.4, /* ブロックの奥行 */
-      nRow: 6, /* ブロックの行数 */ nCol: 9, /* ブロックの列数 */
-      gapX: 0.1, /* 横方向の隙間 */ gapZ: 0.3 /* 縦方向の隙間 */
-    };
+    const h = 0.8; /* ブロックの高さ */
+    const d = 0.4; /* ブロックの奥行 */
+    const gapX = 0.1; /* 横方向の隙間 */
+    const gapZ = 0.3; /* 縦方向の隙間 */
+
     // ブロックの幅
-    param.w = (hFrameW - 2 * vFrameW - (param.nCol + 1) * param.gapX) / param.nCol;
+    const w = (hFrameW - 2 * vFrameW - (param.nCol + 1) * gapX) / param.nCol;
     // ブロックを並べる
 
     // ブロック全体を奥に移動する
@@ -189,7 +191,7 @@ function init() {
   }
 
   // 光源の設定
-  const light = new THREE.SpotLight(0xffffff, 1800);
+  const light = new THREE.SpotLight(0xffffff, 1000);
   light.position.set(0, 15, -10);
   scene.add(light);
 
